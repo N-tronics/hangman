@@ -17,16 +17,17 @@ class Hangman(object):
 
         self.load_images(imgs)
 
-    def create_buttons(self, radius):
+    def create_buttons(self, radius, guessed):
         GAP = 15
         letters = []
         start_x = round((self.game.WIN_WIDTH - (radius * 2 + GAP) * 13) / 2)
         start_y = 400
         alphabet = 65
         for i in range(26):
-            x = start_x + GAP * 2 + (radius * 2 + GAP) * (i % 13)
-            y = start_y + ((i // 13) * (GAP + radius * 2))
-            letters.append([x, y, chr(alphabet + i), True])
+            if chr(alphabet + i) not in guessed:
+                x = start_x + GAP * 2 + (radius * 2 + GAP) * (i % 13)
+                y = start_y + ((i // 13) * (GAP + radius * 2))
+                letters.append([x, y, chr(alphabet + i), True])
 
         return letters
 
@@ -97,7 +98,7 @@ class Hangman(object):
         guessed = []
         for i in hint:
             guessed.append(i)
-        letters = self.create_buttons(RADIUS)
+        letters = self.create_buttons(RADIUS, guessed)
 
         while True:
             self.game.clock.tick(self.game.FPS)
