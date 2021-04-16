@@ -10,9 +10,9 @@ from Hangman import Hangman
 
 
 class Menu(object):
-    def __init__(self, imgs, json_file):
+    def __init__(self, imgs):
         self.game = Game()
-        self.imgs, self.json_file = imgs, json_file
+        self.imgs = imgs
         self.button_width = 200
         self.play_button_width = 400
         self.button_height = 50
@@ -138,14 +138,6 @@ class Menu(object):
             self.draw(easy, medium, hard, play)
 
     def launch_hangman(self, diff):
-        imgs = self.load_images()
-        hangman = Hangman(imgs, self.game, self, diff)
+        hangman = Hangman(self.imgs, self.game, self, diff)
         hangman.main()
 
-    def load_images(self):
-        images = []
-        for img_index in range(7):
-            img = pygame.image.load(os.path.join(self.imgs, 'hangman' + str(img_index) + '.png'))
-            images.append(img)
-
-        return images

@@ -4,16 +4,18 @@ Creates the Hangman UI.
 
 import pygame
 import sys
+import os
 from math import sqrt
 from RandomWord import RandomWord
 
 
 class Hangman(object):
     def __init__(self, imgs, game, menu, difficulty='easy'):
-        self.imgs = imgs
         self.game = game
         self.menu = menu
         self.difficulty = difficulty
+
+        self.load_images(imgs)
 
     def create_buttons(self, radius):
         GAP = 15
@@ -122,4 +124,13 @@ class Hangman(object):
                     won = False
                     break
 
-            self.draw(hangman_status, self.imgs, letters, RADIUS, guessed, word, won)
+            self.draw(hangman_status, self.images, letters, RADIUS, guessed, word, won)
+
+    
+    def load_images(self, imgs):
+        self.images = []
+        for img_index in range(7):
+            os.chdir(os.path.dirname(__file__))
+            path = os.getcwd() + '/' + imgs + '/hangman' + str(img_index) + '.png'
+            img = pygame.image.load(path)
+            self.images.append(img)
