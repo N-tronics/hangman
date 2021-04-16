@@ -87,7 +87,7 @@ class Menu(object):
 
         if self.DIFF_BUTTON_X_RANGE[0] <= m_x <= self.DIFF_BUTTON_X_RANGE[1] and \
                 self.MEDIUM_Y_RANGE[0] <= m_y <= self.MEDIUM_Y_RANGE[1]:
-            self.diff = 'easy'
+            self.diff = 'medium'
             self.medium_text_color = self.game.WHITE
             self.medium_bg_color = self.game.BLACK
         else:

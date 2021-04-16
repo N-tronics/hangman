@@ -7,7 +7,7 @@ import pygame
 
 class Game(object):
     def __init__(self, dimensions=(800, 500)):
-        # Inits
+        # Window Inits
         pygame.init()
         self.WIN_WIDTH, self.WIN_HEIGHT = dimensions
         self.WIN = pygame.display.set_mode(dimensions)
