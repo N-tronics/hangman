@@ -6,7 +6,7 @@ from random import choice, randint
 from os import path
 
 
-class RandomWord(object):
+class HintGenerator(object):
     def __init__(self, diff):
         self.diff = diff
 

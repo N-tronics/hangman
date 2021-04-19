@@ -6,7 +6,7 @@ import pygame
 import sys
 import os
 from math import sqrt
-from RandomWord import RandomWord
+from Hint import HintGenerator
 
 
 class Hangman(object):
@@ -20,6 +20,7 @@ class Hangman(object):
     def create_buttons(self, radius, guessed):
         GAP = 15
         letters = []
+        self.back_button_radius = 20
         start_x = round((self.game.WIN_WIDTH - (radius * 2 + GAP) * 13) / 2)
         start_y = 400
         alphabet = 65
@@ -28,6 +29,8 @@ class Hangman(object):
                 x = start_x + GAP * 2 + (radius * 2 + GAP) * (i % 13)
                 y = start_y + ((i // 13) * (GAP + radius * 2))
                 letters.append([x, y, chr(alphabet + i), True])
+        back_button = [self.back_button_radius + 10, self.back_button_radius + 10, '<', True]
+        letters.append(back_button)
 
         return letters
 
@@ -45,6 +48,10 @@ class Hangman(object):
                 pygame.draw.circle(self.game.WIN, self.game.BLACK, (x, y), radius, 3)
                 text = self.game.LETTER_FONT.render(lttr, True, self.game.BLACK)
                 self.game.WIN.blit(text, (x - text.get_width() / 2, y - text.get_height() / 2))
+
+        """pygame.draw.circle(self.game.WIN, self.game.BLACK, (back_button_radius + 10, back_button_radius + 10), back_button_radius, 5)
+        back_text = self.game.LETTER_FONT.render('<', True, self.game.BLACK)
+        self.game.WIN.blit(back_text, ((back_button_radius + 10 - back_text.get_width() / 2), (back_button_radius + 10 - back_text.get_height() / 2 - 4)))"""
 
         # Word
         display_word = ''
@@ -93,7 +100,7 @@ class Hangman(object):
         # Game Variables
         hangman_status = 0
         RADIUS = 20
-        word_builder = RandomWord(self.difficulty)
+        word_builder = HintGenerator(self.difficulty)
         word, hint = word_builder.get_words()
         guessed = []
         for i in hint:
@@ -110,14 +117,18 @@ class Hangman(object):
                     m_x, m_y = pygame.mouse.get_pos()
                     for letter in letters:
                         x, y, lttr, visible = letter
-                        if visible:
-                            dis = sqrt((x - m_x) ** 2 + (y - m_y) ** 2)
-                            if dis < RADIUS:
-                                letter[3] = False
-                                if lttr in word:
-                                    guessed.append(lttr)
-                                else:
-                                    hangman_status += 1
+                        dis = sqrt((x - m_x) ** 2 + (y - m_y) ** 2)
+                        if lttr != '<':
+                            if visible:
+                                if dis < RADIUS:
+                                    letter[3] = False
+                                    if lttr in word:
+                                        guessed.append(lttr)
+                                    else:
+                                        hangman_status += 1
+                        else:
+                            if dis < self.back_button_radius:
+                                self.menu.main()
 
             won = True
             for lttr in word:

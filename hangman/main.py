@@ -1,3 +1,5 @@
+#!/usr/bin/python3.9
+
 """
 The main file that calls the Menu class.
 """
